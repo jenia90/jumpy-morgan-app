@@ -1,9 +1,17 @@
 # A jumpy-morgan-app Flet app
 
-An example of a minimal Flet app.
+### How to build:
+
+Run the following commands:
+```
+python -m venv venv
+.\venv\Scripts\activate
+pip install flet
+```
+
 
 To run the app:
 
 ```
-flet run [app_directory]
+flet run 
 ```
