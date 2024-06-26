@@ -1,12 +1,14 @@
 import flet as ft
 import requests
-
-
-ENDPOINT = ""
-API_KEY = ""
-
-import requests
 import uuid
+
+
+ENDPOINT = "REPLACE_WITH_ENDPOINT"
+API_KEY = "REPLACE_WITH_API_KEY"
+
+
+USER_ID = uuid.uuid4()
+
 
 def post_user_points(user_id, points):
     # Prepare the headers
@@ -39,9 +41,7 @@ def post_user_points(user_id, points):
 # Example usage
 def post_report(points):
     # Generate a random UUID for this example
-    user_id = uuid.uuid4()
-    
-    result = post_user_points(user_id, points)
+    result = post_user_points(USER_ID, points)
     if result:
         print("Successfully posted data:", result)
     else:
@@ -56,6 +56,11 @@ def main(page: ft.Page):
     page.window.width = 720  # typical phone width
     page.window.height = 1280  # typical phone height
     page.window.resizable = False  # optional: prevent window resizing
+
+    def show_notification(message):
+        page.snack_bar = ft.SnackBar(ft.Text(message))
+        page.snack_bar.open = True
+        page.update()
 
     # Header
     header = ft.AppBar(
@@ -97,11 +102,18 @@ def main(page: ft.Page):
         expand=1,
     )
 
+    def on_add_activity(e):
+        points = 100  # You might want to make this dynamic based on user input
+
+        result = post_user_points(USER_ID, points)
+        if result:
+            show_notification(f"Activity added successfully! Points: {points}")
+        else:
+            show_notification("Failed to add activity. Please try again.")
+
     # Add Activity Button
     add_activity_button = ft.FloatingActionButton(
-        icon=ft.icons.SEND,
-        text="Report Data",
-        on_click=lambda e: post_report(100)
+        icon=ft.icons.SEND, text="Report Data", on_click=on_add_activity
     )
 
     # Main layout
